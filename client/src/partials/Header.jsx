@@ -45,7 +45,7 @@ function Header({
           {/* Header: Right side */}
           <div className="flex items-center">
 
-            <button
+            {/* <button
               className={`w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 transition duration-150 rounded-full ml-3 ${searchModalOpen && 'bg-slate-200'}`}
               onClick={(e) => { e.stopPropagation(); setSearchModalOpen(true); }}
               aria-controls="search-modal"
@@ -58,10 +58,12 @@ function Header({
             </button>
             <SearchModal id="search-modal" searchId="search" modalOpen={searchModalOpen} setModalOpen={setSearchModalOpen} />
             <Notifications />
-            <Help />
+            <Help /> */}
             {/*  Divider */}
             <hr className="w-px h-6 bg-slate-200 mx-3" />
-            <UserMenu />
+            <a href="https://github.com/blackistheneworange/formezy" target="_blank">
+              <img src="/src/images/github.png" alt="github"/>
+            </a>
 
           </div>
 
