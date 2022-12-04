@@ -3,11 +3,13 @@
 #latest nodejs version to use
 FROM node:16
 #Create app directory
-WORKDIR /client
+WORKDIR /app
+
+RUN cd client
 
 # Install app dependencies
 # where available (npm@5+)
-COPY package.json ./
+COPY client/package.json ./
 
 RUN npm install
 # If you are building your code for production
