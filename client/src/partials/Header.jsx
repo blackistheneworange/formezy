@@ -1,15 +1,7 @@
-import React, { useState } from 'react';
-import SearchModal from './header/SearchModal';
-import Notifications from './header/Notifications';
-import Help from './header/Help';
-import UserMenu from './header/UserMenu';
+import React, {  } from 'react';
 
 function Header({
-  sidebarOpen,
-  setSidebarOpen
 }) {
-
-  const [searchModalOpen, setSearchModalOpen] = useState(false)
 
   return (
     <header className="sticky top-0 bg-white border-b border-slate-200 z-30">
@@ -62,7 +54,7 @@ function Header({
             {/*  Divider */}
             <hr className="w-px h-6 bg-slate-200 mx-3" />
             <a href="https://github.com/blackistheneworange/formezy" target="_blank">
-              <img src="/src/images/github.png" alt="github"/>
+              <img src="/assets/github.png" alt="github"/>
             </a>
 
           </div>

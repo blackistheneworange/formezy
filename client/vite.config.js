@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import path from "path";
 import postcss from './postcss.config.js'
 import react from '@vitejs/plugin-react'
 
@@ -24,6 +25,7 @@ export default defineConfig({
   build: {
     commonjsOptions: {
       transformMixedEsModules: true,
-    }
+    },
+    outDir: path.join(__dirname, "../src/main/resources","static"),
   } 
 })
