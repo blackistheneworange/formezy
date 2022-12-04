@@ -5,13 +5,11 @@ FROM node:16
 #Create app directory
 WORKDIR /app
 
-RUN cd client
-
 # Install app dependencies
 # where available (npm@5+)
-COPY client/package.json ./
+COPY client/package.json ./client
 
-RUN npm install
+RUN cd client && npm install
 # If you are building your code for production
 # RUN npm ci --only=production
 
@@ -21,7 +19,7 @@ RUN apt-get update
 COPY . .
 
 # Perform client build
-RUN npm run build && rm -r node_modules && cd ../
+RUN cd client && npm run build && rm -r node_modules && cd ../
 
 
 ### Server build ###
