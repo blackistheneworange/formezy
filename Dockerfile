@@ -3,7 +3,7 @@
 #latest nodejs version to use
 FROM node:16
 #Create app directory
-WORKDIR /app/client
+WORKDIR /client
 
 # Install app dependencies
 # where available (npm@5+)
