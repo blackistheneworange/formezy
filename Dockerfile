@@ -2,8 +2,8 @@ FROM node:16
 WORKDIR /client
 #COPY client .
 COPY . .
-RUN npm ci
-RUN npm run-script build
+RUN npm install
+RUN npm run build
 RUN rm -r node_modules
 
 FROM maven:3.6.3-jdk-11
