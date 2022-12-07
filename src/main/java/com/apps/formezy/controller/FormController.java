@@ -24,7 +24,7 @@ import com.apps.formezy.model.FormRequestBody;
 import com.apps.formezy.model.FormResponse;
 import com.apps.formezy.service.FormService;
 
-@CrossOrigin(origins = "http://127.0.0.1:5173", maxAge = 3600)
+// @CrossOrigin(origins = "http://127.0.0.1:5173", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/form")
 public class FormController {
