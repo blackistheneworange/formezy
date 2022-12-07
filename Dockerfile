@@ -1,6 +1,7 @@
 FROM node:16
 WORKDIR /app
 COPY . .
+RUN ls -a
 RUN cd client
 RUN npm install
 RUN npm run build
