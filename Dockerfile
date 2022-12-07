@@ -1,5 +1,7 @@
 FROM node:16
-COPY ./client/ .
+WORKDIR /app
+COPY . .
+RUN cd client
 RUN npm install
 RUN npm run build
 RUN rm -r node_modules
