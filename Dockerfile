@@ -20,6 +20,8 @@ COPY pom.xml .
 RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline -B
 
+RUN ls src
+RUN ls src/main/resources/static
 # Copy the project source
 COPY src src
 
