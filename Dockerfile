@@ -1,6 +1,7 @@
 FROM node:16
 WORKDIR /client
-COPY client .
+#COPY client .
+COPY . .
 RUN npm ci
 RUN npm run-script build
 RUN rm -r node_modules
