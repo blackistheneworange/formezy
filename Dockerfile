@@ -40,4 +40,4 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
 EXPOSE 8002
 
-ENTRYPOINT ["java","-cp","app:app/lib/*","-Dserver.port=$PORT","com.apps.formezy.Application"]
+ENTRYPOINT ["java","-cp","app:app/lib/*","com.apps.formezy.Application"]
