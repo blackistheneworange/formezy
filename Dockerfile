@@ -25,9 +25,19 @@ COPY src src
 
 # Package the application
 RUN ./mvnw package -DskipTests
-
-COPY --from=app /app/target/app-0.0.1-SNAPSHOT.jar ./app.jar
-EXPOSE 8002
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 # CMD [ "sh", "-c", "java -Dserver.port=$PORT -Djava.security.egd=file:/dev/./urandom -jar app.jar" ]
 
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.apps.formezy.Application"]
+#### Stage 2: A minimal docker image with command to run the app 
+FROM openjdk:19-jdk-alpine
+
+ARG DEPENDENCY=/app/target/dependency
+
+# Copy project dependencies from the build stage
+COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+
+EXPOSE 8002
+
+ENTRYPOINT ["java","-cp","app:app/lib/*","-Dserver.port=$PORT","com.apps.formezy.Application"]
