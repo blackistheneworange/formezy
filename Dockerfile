@@ -7,7 +7,7 @@ RUN npm run build
 RUN rm -r node_modules
 
 #jar build
-FROM openjdk:19-jdk-alpine
+FROM openjdk:19-jdk-alpine as build
 
 WORKDIR /app
 # Copy maven executable to the image
