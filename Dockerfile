@@ -1,7 +1,7 @@
 #client build
 FROM node:16 as formezy-client
 WORKDIR /app
-COPY . .
+COPY ./client .
 RUN npm install
 RUN npm run build
 RUN ls /app/dist
