@@ -1,3 +1,9 @@
 .settings
+target
+
+##client ignores
 client/node_modules
 client/package-lock.json
+client/.env.development
+client/dist
+client/build

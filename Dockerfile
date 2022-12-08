@@ -1,5 +1,5 @@
 #client build
-FROM node:16
+FROM node:16 as formezy-client-image
 WORKDIR /client
 COPY client/ .
 RUN npm install
@@ -7,7 +7,7 @@ RUN npm run build
 RUN rm -r node_modules
 
 #jar build
-FROM openjdk:19-jdk-alpine as build
+FROM openjdk:19-jdk-alpine as formezy-java-image
 
 WORKDIR /app
 # Copy maven executable to the image
@@ -23,8 +23,6 @@ RUN ./mvnw dependency:go-offline -B
 # Copy the project source
 COPY src src
 
-RUN ls src/main/resources/static/assets
-
 # Package the application
 RUN ./mvnw package -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
@@ -36,9 +34,9 @@ FROM openjdk:19-jdk-alpine
 ARG DEPENDENCY=/app/target/dependency
 
 # Copy project dependencies from the build stage
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+COPY --from=formezy-java-image ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=formezy-java-image ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=formezy-java-image ${DEPENDENCY}/BOOT-INF/classes /app
 
 EXPOSE 8002
 
