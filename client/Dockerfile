@@ -7,4 +7,5 @@ RUN npm run build
 RUN ls
 RUN ls dist
 RUN ls /client/dist
+RUN ls /client/dist/assets
 RUN rm -r node_modules
