@@ -1,10 +1,5 @@
 #client build
 FROM node:16 as formezy-client-image
-WORKDIR /client
-COPY client/ .
-RUN npm install
-RUN npm run build
-RUN rm -r node_modules
 
 #jar build
 FROM openjdk:19-jdk-alpine as formezy-java-image
@@ -16,6 +11,14 @@ COPY .mvn .mvn
 
 # Copy the pom.xml file
 COPY pom.xml .
+
+RUN mkdir client
+RUN cd client
+COPY client/ .
+RUN npm install
+RUN npm run build
+RUN rm -r node_modules
+RUN cd ../
 
 RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline -B
