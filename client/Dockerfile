@@ -4,4 +4,7 @@ WORKDIR /client
 COPY . .
 RUN npm install
 RUN npm run build
+RUN ls
+RUN ls dist
+RUN ls /client/dist
 RUN rm -r node_modules
