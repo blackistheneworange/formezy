@@ -25,7 +25,7 @@ export default defineConfig({
   build: {
     commonjsOptions: {
       transformMixedEsModules: true,
-    },
-    outDir: path.join(__dirname, "../src/main/resources","static"),
+    }
+    // outDir: path.join(__dirname, "../src/main/resources","static"),
   } 
 })

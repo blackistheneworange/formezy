@@ -1,13 +1,5 @@
-#client build
-FROM node:16 as formezy-client-image
-WORKDIR /client
-COPY client/ .
-RUN npm install
-RUN npm run build
-RUN rm -r node_modules
-
 #jar build
-FROM openjdk:19-jdk-alpine as formezy-java-image
+FROM openjdk:19-jdk-alpine as formezy-java
 
 WORKDIR /app
 # Copy maven executable to the image
@@ -29,7 +21,7 @@ RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 # CMD [ "sh", "-c", "java -Dserver.port=$PORT -Djava.security.egd=file:/dev/./urandom -jar app.jar" ]
 
 #### Stage 2: A minimal docker image with command to run the app 
-FROM openjdk:19-jdk-alpine
+FROM openjdk:19-jdk-alpine as formezy-java-minimal
 
 ARG DEPENDENCY=/app/target/dependency
 
