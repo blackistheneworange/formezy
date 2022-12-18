@@ -26,7 +26,7 @@ function Header({
               </svg>
             </button> */}
 
-            <a href="#">
+            <a href="#" className='no-underline'>
               <h1 className="tracking-wider font-medium leading-tight text-2xl text-gray-800 hover:text-zinc-600 subpixel-antialiased">
                 FormEzy
               </h1>

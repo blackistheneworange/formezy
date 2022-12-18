@@ -48,7 +48,7 @@ function FormDeleteFieldModal({ActionButton, dropdownOpen, setDropdownOpen, dele
         {(isSelected===true && (action==="delete"))
         ?
         <Transition
-            className="origin-top-right z-10 absolute right-0 sm:mr-0 min-w-80 bg-white border border-slate-200 py-1.5 rounded shadow-lg overflow-hidden"
+            className="origin-top-right z-10 absolute right-0 bottom-0 sm:mr-0 min-w-80 bg-white border border-slate-200 py-1.5 rounded shadow-lg overflow-hidden"
             show={dropdownOpen}
             appear={true}
             enter="transition ease-out duration-200 transform"

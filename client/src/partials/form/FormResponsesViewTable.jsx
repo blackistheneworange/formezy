@@ -1,4 +1,4 @@
-function FormResponsesViewTable({responses, columns, setNotification}){
+function FormResponsesViewTable({responses, columns}){
 
     return(
         <div className="w-full mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
@@ -32,9 +32,17 @@ function FormResponsesViewTable({responses, columns, setNotification}){
                         <tbody className="text-sm divide-y divide-gray-100">
                             {responses.map((response) => 
                                 <tr key={response.id}>
-                                    {response?.response && Object.keys(response?.response).map(objectKey =>
+                                    {response?.response && Object.keys(response?.response).map(
+                                    (objectKey) =>
                                         <td key={`td_${objectKey}`} className="p-2 whitespace-nowrap">
-                                            <div className="text-left font-medium text-gray-800">{response?.response[objectKey]}</div>
+                                            <div className="text-left font-medium text-gray-800">
+                                                {
+                                                    typeof response?.response[objectKey] === "object" ?
+                                                        `[ ${response?.response[objectKey].join(" ][ ")} ]`
+                                                    :
+                                                        response?.response[objectKey]
+                                                }
+                                            </div>
                                         </td>
                                     )}
                                 </tr>

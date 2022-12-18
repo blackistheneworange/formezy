@@ -4,23 +4,23 @@ import FormCreateFieldModal from './FormCreateFieldModal';
 import FormDeleteFieldModal from './FormDeleteFieldModal';
 
 import { capitalWord } from '../../utils/Utils';
+import { formResponseFormats } from '../../utils/Form';
 
 function FormFieldsTable({createFormField, updateFormField, deleteFormField, fields, setNotification}){
 
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [dropdownEditOpen, setDropdownEditOpen] = useState(false);
+    const [createModalOpen, setCreateModalOpen] = useState(false);
     const [dropdownDeleteOpen, setDropdownDeleteOpen] = useState(false);
     const [pageProps, setPageProps] = useState({action:"create"});
 
     
     function handleToggleEditFormField(formField){
         setPageProps({...pageProps, action:"edit", formField:formField});
-        setDropdownEditOpen(true);
+        setCreateModalOpen(true);
     }
     
     function handleToggleCreateFormField(){
         setPageProps({...pageProps, action:"create", formField:{}});
-        setDropdownOpen(true);
+        setCreateModalOpen(true);
     }
     
     function handleToggleDeleteFormField(formField){
@@ -29,10 +29,10 @@ function FormFieldsTable({createFormField, updateFormField, deleteFormField, fie
     }
 
     useEffect(()=>{
-        if(dropdownEditOpen === false){
+        if(createModalOpen === false){
             setPageProps({...pageProps, action:"none",formField:{}})
         }
-    },[dropdownEditOpen])
+    },[createModalOpen])
 
     
     useEffect(()=>{
@@ -45,7 +45,19 @@ function FormFieldsTable({createFormField, updateFormField, deleteFormField, fie
         <div className="w-full mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
                         <header className="px-5 py-4 border-b border-gray-100 flex align-center justify-between">
                             <h2 className="font-semibold text-gray-800">Fields</h2>
-                            <FormCreateFieldModal createFormField={createFormField} dropdownOpen={dropdownOpen} setDropdownOpen={setDropdownOpen} toggleCreateFormField={handleToggleCreateFormField} isSelected={pageProps.action==="create"} action={pageProps.action} setNotification={setNotification}/>
+                            <button 
+                                type="button"
+                                area="form-field-create-modal"
+                                className="btn bg-indigo-500 hover:bg-indigo-600 text-white" 
+                                aria-haspopup="true"
+                                onClick={handleToggleCreateFormField}
+                                aria-expanded={createModalOpen}
+                            >
+                                <svg area="form-field-create-modal" className="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                                    <path area="form-field-create-modal" d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                                </svg>
+                                <span area="form-field-create-modal" className="hidden xs:block ml-2">Add</span>
+                            </button>
                         </header>
                         <div className="p-3">
                             {/* <div className="overflow-x-auto"> */}
@@ -93,7 +105,7 @@ function FormFieldsTable({createFormField, updateFormField, deleteFormField, fie
                                                     <div className="text-left">{capitalWord(field.responseType)}</div>
                                                 </td>
                                                 <td className="p-2 whitespace-nowrap">
-                                                    <div className="text-left font-medium text-green-500">{capitalWord(field.responseFormat)}</div>
+                                                    <div className="text-left font-medium text-green-500">{capitalWord(formResponseFormats.find(fr => fr.value === field.responseFormat).name)}</div>
                                                 </td>
                                                 <td className="p-2 whitespace-nowrap">
                                                     <div className="text-lg text-center">
@@ -107,11 +119,11 @@ function FormFieldsTable({createFormField, updateFormField, deleteFormField, fie
                                                             </svg>
                                                         </button> */}
 
-                                                        <FormCreateFieldModal 
+                                                        {/* <FormCreateFieldModal 
                                                             createFormField={createFormField} 
                                                             updateFormField={updateFormField} 
-                                                            dropdownOpen={dropdownEditOpen} 
-                                                            setDropdownOpen={setDropdownEditOpen} 
+                                                            createModalOpen={editModalOpen} 
+                                                            setCreateModalOpen={setEditModalOpen} 
                                                             action={pageProps.action} 
                                                             selectedFormField={pageProps.formField} 
                                                             ActionButton={()=>
@@ -119,9 +131,9 @@ function FormFieldsTable({createFormField, updateFormField, deleteFormField, fie
                                                             }  
                                                             isSelected={(!pageProps.formField ? false : (pageProps.formField.id === field.id) ? true : false)}
                                                             setNotification={setNotification}
-                                                        />
+                                                        /> */}
 
-                                                        
+                                                        <EditActionButton onClick={handleToggleEditFormField} field={field}/>
                                                         <FormDeleteFieldModal 
                                                             deleteFormField={deleteFormField}
                                                             dropdownOpen={dropdownDeleteOpen} 
@@ -151,6 +163,16 @@ function FormFieldsTable({createFormField, updateFormField, deleteFormField, fie
                                 </table>
                             </div>
                         </div>
+
+            <FormCreateFieldModal 
+                createFormField={createFormField} 
+                updateFormField={updateFormField}
+                open={createModalOpen} 
+                setOpen={setCreateModalOpen} 
+                toggleCreateFormField={handleToggleCreateFormField} 
+                action={pageProps.action} 
+                selectedFormField={pageProps.formField}
+            />
         </div>
     );
 }
@@ -171,13 +193,12 @@ function DeleteActionButton({handleToggleDeleteFormField, field, innerRef}){
     )
 }
 
-function EditActionButton({handleToggleEditFormField, field, innerRef}){
+function EditActionButton({onClick, field}){
     return(
         <button 
             area="form-field-edit-modal"
-            ref={innerRef}
             className="text-slate-500 hover:text-slate-600 mx-1"
-            onClick={() => {handleToggleEditFormField(field)}}
+            onClick={() => onClick(field)}
             type="button"
         >
             <svg area="form-field-edit-modal" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

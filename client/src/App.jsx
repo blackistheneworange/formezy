@@ -4,7 +4,9 @@ import {
   Route,
   useLocation
 } from 'react-router-dom';
+import nolertNotify from "@nolert/notify";
 
+import "@nolert/notify/dist/style.min.css";
 import './css/style.css';
 
 import './charts/ChartjsConfig';
@@ -16,6 +18,13 @@ import FormViewPage from './pages/FormView';
 function App() {
 
   const location = useLocation();
+
+  useEffect(()=>{
+    nolertNotify.setConfig({
+      position:"bottom",
+      display:"solo"
+    })
+  },[]);
 
   useEffect(() => {
     document.querySelector('html').style.scrollBehavior = 'auto'

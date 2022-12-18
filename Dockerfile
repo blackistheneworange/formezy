@@ -4,7 +4,6 @@ WORKDIR /app
 COPY ./client .
 RUN npm install
 RUN npm run build
-RUN ls /app/dist
 RUN rm -r node_modules
 
 #jar build

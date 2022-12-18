@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import ButtonSpinner from '../../utils/ButtonSpinner';
+import TextEditor from '../../utils/TextEditor';
 import Transition from '../../utils/Transition';
 import FormFieldsTable from './FormFieldsTable';
+
 
 let formFieldId=1;
 function FormCreateModal({
@@ -16,7 +17,6 @@ function FormCreateModal({
   createFormField,
   updateForm,
   toggleForm,
-  setNotification
 }) {
 
     const [form, setForm] = useState({
@@ -28,11 +28,12 @@ function FormCreateModal({
         fields:[]
     })
     const modalContent = useRef(null);
-    const searchInput = useRef(null);
 
     useEffect(()=>{
         if(action==="edit" && selectedForm && selectedForm.id){
             setForm({...selectedForm})
+            document.getElementById("formDescription").textContent = selectedForm.desc;
+            document.getElementById("formSuccessMessage").textContent = selectedForm.successMessage;
         }
         else{
             setForm({
@@ -41,8 +42,11 @@ function FormCreateModal({
                 type:"normal",
                 active:true,
                 companyName:"",
+                successMessage:"",
                 fields:[]
             })
+            document.getElementById("formDescription").textContent = "";
+            document.getElementById("formSuccessMessage").textContent = "";
         }
 
         return () => setForm({
@@ -51,6 +55,7 @@ function FormCreateModal({
             type:"normal",
             active:true,
             companyName:"",
+            successMessage:"",
             fields:[]
         })
     },[modalOpen])
@@ -206,13 +211,27 @@ function FormCreateModal({
                                     <option value={false}>Inactive</option>
                                 </select>
                             </div>
-                            <div className="col-span-6 sm:col-span-3 lg:col-span-4">
-                                <label htmlFor="formDescription" className="block text-sm font-medium text-gray-700">Description</label>
-                                <textarea placeholder="Type here..." name="desc" id="formDescription" rows={1} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={form.desc} onChange={handleChange} required={true}></textarea>
-                            </div>
-                            <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                            <div className="col-span-12 lg:col-span-6">
                                 <label htmlFor="formCompanyName" className="block text-sm font-medium text-gray-700">Company Name (Optional)</label>
                                 <input type="text" placeholder="Type here..." name="companyName" id="formCompanyName" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={form.companyName} onChange={handleChange}/>
+                            </div>
+                            {/* <div className="col-span-12">
+                                <label htmlFor="formDescription" className="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea placeholder="Type here..." name="desc" id="formDescription" rows={4} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={form.desc} onChange={handleChange} required={true}></textarea>
+                            </div> */}
+                            
+                            <div className="col-span-12">
+                                <label htmlFor="formDescription" className="block text-sm font-medium text-gray-700">Description</label>
+                                <TextEditor 
+                                    handleChange={(el)=>handleChange({currentTarget:{name:"desc",value:el.target.textContent}})} id="formDescription"
+                                />
+                            </div>
+                            
+                            <div className="col-span-12">
+                                <label htmlFor="formSuccessMessage" className="block text-sm font-medium text-gray-700">Success Message</label>
+                                <TextEditor 
+                                    handleChange={(el)=>handleChange({currentTarget:{name:"successMessage",value:el.target.textContent}})}  id="formSuccessMessage"
+                                />
                             </div>
                         </div>
                     </div>
@@ -225,7 +244,6 @@ function FormCreateModal({
                             createFormField={handleCreateFormField} 
                             updateFormField={handleUpdateFormField}
                             deleteFormField={handleDeleteFormField}
-                            setNotification={setNotification}
                         />
                     </div>
                 </div>
@@ -240,14 +258,10 @@ export default FormCreateModal;
 
 function styleSubmitButton(btn, active){
     if(active){
-        btn.children[0].style.display="block";
-        btn.children[1].style.display="none";
         btn.children[2].textContent="Saving..."
         btn.disabled = true;
     }
     else{
-        btn.children[0].style.display="none";
-        btn.children[1].style.display="block";
         btn.children[2].textContent="Save"
         btn.disabled = false;
     }

@@ -58,7 +58,7 @@ public class FormServiceImpl implements FormService {
 			query.addCriteria(Criteria.where("formId").is(currForm.getId()));;
 			List<FormField> populatedFields = mongoTemplateForFormFieldRepository.find(query, FormField.class);
 			
-			FormRequestBody finalForm = new FormRequestBody(currForm.getId(), currForm.getName(), currForm.getDesc(), currForm.getType(), currForm.isActive(), currForm.getCompanyName(), new ArrayList<FormField>(), currForm.getCreated(), currForm.getUpdated());
+			FormRequestBody finalForm = new FormRequestBody(currForm.getId(), currForm.getName(), currForm.getDesc(), currForm.getSuccessMessage(), currForm.getType(), currForm.isActive(), currForm.getCompanyName(), new ArrayList<FormField>(), currForm.getCreated(), currForm.getUpdated());
 			
 			
 			finalForm.setFields(populatedFields);
@@ -75,7 +75,7 @@ public class FormServiceImpl implements FormService {
 				() -> new NotFoundException(new Exception("Form not found"))
 				);
 		
-		FormRequestBody finalForm = new FormRequestBody(currForm.getId(), currForm.getName(), currForm.getDesc(), currForm.getType(), currForm.isActive(), currForm.getCompanyName(), new ArrayList<FormField>(), currForm.getCreated(), currForm.getUpdated());
+		FormRequestBody finalForm = new FormRequestBody(currForm.getId(), currForm.getName(), currForm.getDesc(), currForm.getSuccessMessage(), currForm.getType(), currForm.isActive(), currForm.getCompanyName(), new ArrayList<FormField>(), currForm.getCreated(), currForm.getUpdated());
 
 		Query query = new Query();
 		query.addCriteria(Criteria.where("formId").is(currForm.getId()));;
@@ -104,6 +104,7 @@ public class FormServiceImpl implements FormService {
 					FormRequestBody.getId(),
 					FormRequestBody.getName(),
 					FormRequestBody.getDesc(),
+					FormRequestBody.getSuccessMessage(),
 					FormRequestBody.getType(), 
 					FormRequestBody.isActive(), 
 					FormRequestBody.getCompanyName(),
@@ -177,6 +178,7 @@ public class FormServiceImpl implements FormService {
 			//update form
 			form.setName(updatedForm.getName());
 			form.setDesc(updatedForm.getDesc());
+			form.setSuccessMessage(updatedForm.getSuccessMessage());
 			form.setActive(updatedForm.isActive());
 			form.setType(updatedForm.getType());
 			form.setCompanyName(updatedForm.getCompanyName());

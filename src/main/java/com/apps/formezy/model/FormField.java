@@ -29,6 +29,7 @@ public class FormField {
 	private String responseType;
 	@NotNull(message = "Form field answer format cannot be empty")
 	private boolean required=false;
+	private Object select= new Object();
 	private String responseFormat;
 	private LocalDateTime created;
 	private LocalDateTime updated;

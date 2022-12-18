@@ -1,34 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import nolertNotify from "@nolert/notify";
+
 import { SquaresPlusIcon } from '@heroicons/react/24/outline'
 
-// import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
 import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
-// import DashboardAvatars from '../partials/dashboard/DashboardAvatars';
-// import FilterButton from '../partials/actions/FilterButton';
-// import Datepicker from '../partials/actions/Datepicker';
-// import DashboardCard01 from '../partials/dashboard/DashboardCard01';
-// import DashboardCard02 from '../partials/dashboard/DashboardCard02';
-// import DashboardCard03 from '../partials/dashboard/DashboardCard03';
-// import DashboardCard04 from '../partials/dashboard/DashboardCard04';
-// import DashboardCard05 from '../partials/dashboard/DashboardCard05';
-// import DashboardCard06 from '../partials/dashboard/DashboardCard06';
-// import DashboardCard07 from '../partials/dashboard/DashboardCard07';
-// import DashboardCard08 from '../partials/dashboard/DashboardCard08';
-// import DashboardCard09 from '../partials/dashboard/DashboardCard09';
-// import DashboardCard10 from '../partials/dashboard/DashboardCard10';
-// import DashboardCard11 from '../partials/dashboard/DashboardCard11';
-// import DashboardCard12 from '../partials/dashboard/DashboardCard12';
-// import DashboardCard13 from '../partials/dashboard/DashboardCard13';
 import Banner from '../partials/Banner';
 
 //forms
 import FormCreateModal from '../partials/form/FormCreateModal';
 import FormDisplayCard from '../partials/form/FormDisplayCard';
 import FormDeleteModal from '../partials/form/FormDeleteModal';
-import Notification from '../utils/Notification';
 import FormResponsesViewModal from '../partials/form/FormResponsesViewModal';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -43,7 +27,6 @@ function Dashboard() {
   const [formCreateModalOpen, setFormCreateModalOpen] = useState(false);
   const [formDeleteModalOpen, setFormDeleteModalOpen] = useState(false);
   const [formResponsesModalOpen, setFormResponsesModalOpen] = useState(false);
-  const [notification, setNotification] = useState({type:"success",message:null});
   const [isLoading, setIsLoading] = useState(true);
 
   const [forms, setForms] = useState([]);
@@ -84,41 +67,50 @@ function Dashboard() {
 
   async function handleCreateForm(form){
     // setForms([...forms, {...form, id:formId++}]);
-    setNotification({type:"success",message:null});
     try{
       const {data} = await axios.post(`${API_URL}/api/v1/form`, form);
-      setNotification({type:"success",message:"Form created successfully"});
+      nolertNotify.trigger({
+        type:"success",message:"Form created successfully"
+      });
       setForms([...forms, data]);
     }
     catch(err){
-      setNotification({type:"danger",message:(err.response ? err.response?.data?.message : (err.message || err || ""))});
+      nolertNotify.trigger({
+        type:"danger",message:(err.response ? err.response?.data?.message : (err.message || err || ""))
+      });
       throw err;
     }
   }
   
   async function handleUpdateForm(form){
-    setNotification({type:"success",message:null});
     try{
       const {data} = await axios.put(`${API_URL}/api/v1/form/${form.id}`, form);
-      setNotification({type:"success",message:"Form updated successfully"});
+      nolertNotify.trigger({
+        type:"success",message:"Form updated successfully"
+      });
       setForms(forms.map(f => f.id === form.id ? {analytics:form.analytics,...data} : f));
       setPageProps({...pageProps, action:"create", form:null});
     }
     catch(err){
-      setNotification({type:"danger",message:(err.response ? err.response?.data?.message : (err.message || err || ""))});
+      nolertNotify.trigger({
+        type:"danger",message:(err.response ? err.response?.data?.message : (err.message || err || ""))
+      });
       throw err;
     }
   }
   
   async function handleDeleteForm(id){
-    setNotification({type:"success",message:null});
     try{
       await axios.delete(`${API_URL}/api/v1/form/${id}`);
-      setNotification({type:"success",message:"Form deleted successfully"});
+      nolertNotify.trigger({
+        type:"success",message:"Form deleted successfully"
+      });
       setForms(forms.filter(f => f.id !== id));
     }
     catch(err){
-      setNotification({type:"danger",message:(err.response ? err.response?.data?.message : (err.message || err || ""))});
+      nolertNotify.trigger({
+        type:"danger",message:(err.response ? err.response?.data?.message : (err.message || err || ""))
+      });
       throw err;
     }
     finally{
@@ -249,15 +241,11 @@ function Dashboard() {
 
         <Banner />
         
-        <FormCreateModal toggleForm={handleToggleEditForm} id="form-create-modal" modalOpen={formCreateModalOpen} setModalOpen={setFormCreateModalOpen} createForm={handleCreateForm} updateForm={handleUpdateForm} action={pageProps.action} selectedForm={pageProps.form} setNotification={setNotification}/>
+        <FormCreateModal toggleForm={handleToggleEditForm} id="form-create-modal" modalOpen={formCreateModalOpen} setModalOpen={setFormCreateModalOpen} createForm={handleCreateForm} updateForm={handleUpdateForm} action={pageProps.action} selectedForm={pageProps.form}/>
 
         <FormDeleteModal toggleForm={handleToggleDeleteForm} modalOpen={formDeleteModalOpen} setModalOpen={setFormDeleteModalOpen} selectedForm={pageProps.form} deleteForm={handleDeleteForm}/>
 
         <FormResponsesViewModal toggleFormResponses={handleToggleFormResponses} modalOpen={formResponsesModalOpen} setModalOpen={setFormResponsesModalOpen} selectedForm={pageProps.form}/>
-
-        {/*Notification*/}
-        <Notification type={notification.type} message={notification.message} setNotification={setNotification} timeout={3000}/>
-
       </div>
     </div>
   );

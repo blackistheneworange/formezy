@@ -1,7 +1,15 @@
 export const formResponseFormats =  [
     {name:"Any",value:"any"},
-    {name:"Email Address",value:"email"},
-    {name:"URL",value:"url"},
+    {name:"Paragraph",value:"textarea"},
     {name:"Text Only",value:"text"},
     {name:"Numbers Only",value:"number"},
+    {name:"Email Address",value:"email"},
+    {name:"Password",value:"password"},
+    {name:"URL",value:"url"},
+    {name:"Color",value:"color"},
+    {name:"Date",value:"date"},
+    {name:"Time",value:"time"},
+    {name:"Date & Time",value:"datetime-local"},
+    {name:"Month",value:"month"},
+    {name:"Week",value:"week"},
 ]

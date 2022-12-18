@@ -29,6 +29,7 @@ public class FormRequestBody {
 	private String name;
 	@NotNull(message = "Form description cannot be empty")
 	private String desc;
+	private String successMessage;
 	private String type="normal";
 	private boolean active=true;
 	private String companyName;

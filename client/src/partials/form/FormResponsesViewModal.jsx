@@ -17,7 +17,6 @@ function FormResponsesViewModal({
     const [formResponses, setFormResponses] = useState([]);
     const [selectedFormResponses, setSelectedFormResponses] = useState([]);
     const modalContent = useRef(null);
-    const searchInput = useRef(null);
 
     useEffect(()=>{
         if(modalOpen === true && selectedForm?.id){
@@ -28,12 +27,32 @@ function FormResponsesViewModal({
             else{
                 axios.get(`${API_URL}/api/v1/form/${selectedForm.id}/response`)
                 .then(({data}) => {
+                    data = filterFormResponses(data);
                     setFormResponses([...formResponses, {...selectedForm, responses:data}]);
                     setSelectedFormResponses([...data]);
                 })
             }
         }
     },[modalOpen])
+
+    function filterFormResponses(data){
+        if(data && data.length>0){
+            return data.map(formResponse => 
+                    ({
+                        ...formResponse, 
+                        response: Object.keys(formResponse.response).filter(responseFieldName => 
+                            selectedForm?.fields?.map(f => f.name.toLowerCase()).includes(responseFieldName.toLowerCase())
+                        )
+                        .map(
+                            exisitingFieldName => formResponse.response[exisitingFieldName]
+                        )
+                    })
+            )
+        }
+        else{
+            return [];
+        }
+    }
 
     // close on click outside
     // useEffect(() => {

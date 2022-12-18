@@ -76,7 +76,7 @@ function FormDisplayCard({form, toggleEditForm, toggleDeleteForm, toggleFormResp
               <button className="w-full font-medium text-sm text-slate-600 hover:text-slate-800 flex py-1 px-3" onClick={()=>toggleFormResponses(form)}>View Responses</button>
             </li>
             <li>
-              <a target="_blank" href={`/form/${form.id}`} className="w-full font-medium text-sm text-slate-600 hover:text-slate-800 flex py-1 px-3">Visit Form</a>
+              <a target="_blank" href={`/form/${form.id}`} className="w-full font-medium text-sm text-slate-600 hover:text-slate-800 flex py-1 px-3 no-underline">Visit Form</a>
             </li>
             <li>
               <button className="w-full font-medium text-sm text-slate-600 hover:text-slate-800 flex py-1 px-3" onClick={()=>toggleEditForm(form)}>Edit</button>
@@ -97,11 +97,9 @@ function FormDisplayCard({form, toggleEditForm, toggleDeleteForm, toggleFormResp
           <h2 className="text-lg font-semibold text-slate-800 mb-2">
               {form.name}
           </h2>
-          <div className="text-xs font-semibold text-slate-500 mb-1">{form.desc}</div>
-          {/* <div className="flex items-start">
-            <div className="text-3xl font-bold text-slate-800 mr-2">Entries: 0</div>
-            <div className="text-sm font-semibold text-white px-1.5 bg-green-500 rounded-full">+49%</div>
-          </div> */}
+          <hr className="mb-2"/>
+          <div className="text-xs font-semibold text-slate-500 mb-1" dangerouslySetInnerHTML={{__html: form.desc}}></div>
+          
         </div>
       </div>
       <hr/>

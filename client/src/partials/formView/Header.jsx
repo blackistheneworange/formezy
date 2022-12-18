@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 function FormViewHeader({form}) {
 
@@ -17,7 +17,7 @@ function FormViewHeader({form}) {
                         <div className="h-full bg-gray-200 rounded-full dark:bg-gray-300 w-48 mb-4"></div>
                     </div>
                 :
-                    <a href="#">
+                    <a href="#" className="no-underline">
                         <h1 className="tracking-wider font-medium leading-tight text-2xl text-gray-800 hover:text-zinc-600 subpixel-antialiased">
                             {form.data?.companyName}
                         </h1>
